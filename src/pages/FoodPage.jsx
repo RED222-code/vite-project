@@ -5,45 +5,54 @@ import Img1 from "../assets/food1.jpg";
 import Img2 from "../assets/food2.jpg";
 import Img3 from "../assets/food3.jpg";
 
-const mockRecipes = [
-  {
-    id: 1,
-    name: "Delicious Pasta",
-    description: "Homemade pasta with fresh herbs and vegetables",
-    time: "30 mins",
-    servings: 4,
-    image: Img1,
-  },
-  {
-    id: 2,
-    name: "Grilled Salmon",
-    description:
-      "Perfectly grilled salmon with lemon butter sauce and roasted vegetables",
-    time: "25 mins",
-    servings: 2,
-    image: Img2,
-  },
-  {
-    id: 3,
-    name: "Chocolate Cake",
-    description: "Rich and moist chocolate cake with frozen bit and creamy topping",
-    time: "45 mins",
-    servings: 8,
-    image: Img3,
-  },
-];
+const LOADING_DELAY_MS = 2000;
+const FALLBACK_IMAGES = [Img1, Img2, Img3];
 
-const fetchRecipes = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockRecipes);
-    }, 1500);
+const wait = (duration) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, duration);
   });
+
+const buildDescription = (meal) => {
+  const ingredients = Array.from({ length: 20 }, (_, index) =>
+    meal[`strIngredient${index + 1}`]?.trim()
+  ).filter(Boolean);
+
+  if (meal.strInstructions) {
+    return `${meal.strInstructions.slice(0, 110).trim()}...`;
+  }
+
+  if (ingredients.length > 0) {
+    return `Made with ${ingredients.slice(0, 4).join(", ")}.`;
+  }
+
+  return "A tasty recipe fresh from TheMealDB collection.";
+};
+
+const fetchRecipes = async () => {
+  const response = await fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=");
+
+  if (!response.ok) {
+    throw new Error("Unable to fetch recipes.");
+  }
+
+  const data = await response.json();
+  const meals = data.meals ?? [];
+
+  return meals.slice(0, 6).map((meal, index) => ({
+    id: meal.idMeal,
+    name: meal.strMeal,
+    description: buildDescription(meal),
+    time: `${20 + index * 5} mins`,
+    servings: 2 + (index % 4),
+    image: meal.strMealThumb || FALLBACK_IMAGES[index % FALLBACK_IMAGES.length],
+  }));
 };
 
 const FoodPage = () => {
   const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
   const [activeSlide, setActiveSlide] = useState(0);
 
   const galleryImages = [Img1, Img2, Img3];
@@ -51,12 +60,15 @@ const FoodPage = () => {
   useEffect(() => {
     const loadRecipes = async () => {
       setIsLoading(true);
+      setErrorMessage("");
 
       try {
-        const data = await fetchRecipes();
+        const [data] = await Promise.all([fetchRecipes(), wait(LOADING_DELAY_MS)]);
         setRecipes(data);
       } catch (error) {
         console.error("Error fetching recipes:", error);
+        setErrorMessage("We couldn't load recipes right now. Please try again.");
+        await wait(LOADING_DELAY_MS);
       } finally {
         setIsLoading(false);
       }
@@ -142,10 +154,11 @@ const FoodPage = () => {
               <h2 className="section-title">Our Featured Recipes</h2>
             </div>
             <p className="section-copy">
-              A neat selection of comforting dishes for lunch, dinner, and
-              dessert.
+              Fresh recipe ideas loaded from TheMealDB for lunch, dinner, and
+              dessert inspiration.
             </p>
           </div>
+          {errorMessage ? <p className="recipes-error">{errorMessage}</p> : null}
           <div className="recipes-grid">
             {isLoading
               ? Array.from({ length: 3 }).map((_, index) => (

@@ -319,6 +319,15 @@ nav > .mainBtn {
   gap: 1.25rem;
 }
 
+.recipes-error {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #d8b8b1;
+  border-radius: 18px;
+  background-color: #fff2ef;
+  color: #8c3628;
+}
+
 /*-------------------------------FOOD CARD COMPONENT------------------------------------*/
 .food-card {
   background: var(--surface-color);

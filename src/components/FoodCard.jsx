@@ -6,7 +6,7 @@ function FoodCard({ image, name, description, servings, time, isLoading }) {
       {isLoading ? (
         <div className="food-card-loading">
           <div className="spinner"></div>
-          <p>Loading recipe...</p>
+          <p>Loading recipes...</p>
         </div>
       ) : (
         <>
