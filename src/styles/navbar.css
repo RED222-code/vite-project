@@ -1,0 +1,46 @@
+/* ============================================================
+   navbar.css — Navigation Bar Styles
+   ============================================================
+   Styles for the top navigation bar: logo, nav links, and
+   the "Reserve" button. Uses flexbox for horizontal layout.
+   ============================================================ */
+
+nav {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--line-color);
+}
+
+/* The restaurant name / logo text */
+nav > .logo {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--text-color);
+}
+
+/* Horizontal list of navigation links */
+nav > ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+  align-items: center;
+  color: var(--muted-color);
+  font-size: 0.95rem;
+}
+
+/* The nav's action button (e.g. "Reserve") */
+nav > .mainBtn {
+  padding: 0.75rem 1.2rem;
+  background-color: transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+}

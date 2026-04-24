@@ -1,0 +1,83 @@
+/* ============================================================
+   recipes-section.css — Recipes Section Styles
+   ============================================================
+   The "Our Featured Recipes" section below the hero.
+   Includes the section header, the responsive card grid,
+   and error / empty state messages.
+   ============================================================ */
+
+.recipes-section {
+  width: 100%;
+  padding: 1rem 2rem 4rem;
+  background-color: transparent;
+}
+
+/* Centered container with a top border to separate from hero */
+.recipes-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line-color);
+}
+
+/* --- Section Header (title + description side by side) --- */
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.section-label {
+  margin-bottom: 0.7rem;
+  color: var(--muted-color);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  text-align: left;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.4rem;
+  margin-bottom: 0;
+  color: var(--text-color);
+  font-weight: 400;
+}
+
+.section-copy {
+  max-width: 360px;
+  color: var(--muted-color);
+  line-height: 1.7;
+  text-align: right;
+}
+
+/* --- Responsive Card Grid ---
+   auto-fit + minmax creates a grid that automatically wraps
+   cards to the next row when they can't fit at 260px wide. */
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+/* --- Error & Empty States --- */
+.recipes-error {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #d8b8b1;
+  border-radius: 18px;
+  background-color: #fff2ef;
+  color: #8c3628;
+}
+
+.recipes-empty {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line-color);
+  border-radius: 18px;
+  background-color: var(--surface-color);
+  color: var(--muted-color);
+}
